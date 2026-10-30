@@ -18,13 +18,23 @@ if (is_post()) {
             $hash = password_hash($password, PASSWORD_DEFAULT);
             db()->prepare("INSERT INTO users (full_name, email, password_hash, role) VALUES (?, ?, ?, 'user')")
                 ->execute([$values['full_name'], $values['email'], $hash]);
-            $id = (int)db()->lastInsertId();
+
+            $id = (int) db()->lastInsertId();
+
             foreach (['Personal', 'Work', 'University', 'Social Media', 'Education', 'Financial'] as $category) {
                 db()->prepare('INSERT INTO categories (user_id, category_name) VALUES (?, ?)')->execute([$id, $category]);
             }
+
+            // Generate recovery codes
+            $codes = generate_recovery_codes($id);
+
+            // Store codes temporarily in session so we can show them
+            $_SESSION['temp_recovery_codes'] = $codes;
+            $_SESSION['temp_user_id'] = $id;
+
             audit('account_registered', 'New user account created', $id);
-            flash('success', 'Your account was created. Welcome to APT Vault!');
-            sign_in($id);
+            flash('success', 'Account created. Please save your recovery codes.');
+            sign_in($id);   // This will redirect to recovery.php?action=show because codes are not confirmed yet
         } catch (PDOException $e) {
             if ($e->getCode() === '23000') $errors[] = 'An account already exists with that email.';
             else throw $e;

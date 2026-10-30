@@ -38,7 +38,7 @@ render_header('Sign in');
   <form method="post" data-validate="login" novalidate><?= csrf_field() ?>
     <label for="email">Email Address <b>*</b></label><input id="email" name="email" type="email" autocomplete="username" placeholder="you@example.com" maxlength="150" required value="<?= h($email) ?>">
     <label for="password">Master Password <b>*</b></label><div class="input-adorn"><input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Enter your master password"><button type="button" class="eye-btn" data-toggle-password="password" aria-label="Show password">Show</button></div>
-    <div class="form-between"><span class="note-muted">Keep your master password private</span><a href="contact.php">Need help signing in?</a></div>
+    <div class="form-between"><span class="note-muted">Keep your master password private</span><a href="recovery.php?action=forgot">Forgot password?</a></div>
     <button class="btn btn-primary btn-full" type="submit">Sign In</button>
   </form><div class="or-divider">OR</div><p class="auth-bottom">Don't have an account? <a href="register.php">Create account</a></p>
 </div></main>
