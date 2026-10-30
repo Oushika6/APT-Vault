@@ -138,4 +138,21 @@ CREATE TABLE `security_logs` (
     REFERENCES `users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Recovery codes support
+
+ALTER TABLE `users` 
+ADD COLUMN `recovery_codes_confirmed` TINYINT(1) NOT NULL DEFAULT 0 AFTER `is_active`;
+
+CREATE TABLE `recovery_codes` (
+  `code_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT UNSIGNED NOT NULL,
+  `code_hash` VARCHAR(255) NOT NULL,
+  `used` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`code_id`),
+  KEY `idx_recovery_user` (`user_id`),
+  CONSTRAINT `fk_recovery_user` FOREIGN KEY (`user_id`) 
+    REFERENCES `users` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 COMMIT;
