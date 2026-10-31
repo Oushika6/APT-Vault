@@ -9,9 +9,8 @@ copy the APT-Vault-Main folder into your xampp\htdocs\.
 In a command prompt with , run:
 
   cd C:\xampp\htdocs\APT-Vault-Main
-  
   C:\xampp\php\php.exe scripts\generate-key.php
-
+  
 copy the key and paste in the .env file after APP_KEY=
 
-Finally with Apache and MySql running, run http://localhost/APT-Vault-Main/public/
+3. Finally with Apache and MySql running, run http://localhost/APT-Vault-Main/public/
